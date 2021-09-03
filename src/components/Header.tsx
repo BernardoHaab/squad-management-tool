@@ -19,7 +19,7 @@ const Header: React.FC<HeaderProps> = ({ userName }) => {
 
       <span>
         <p>{userName}</p>
-        <div className="userImage">
+        <div className="user-image">
           <p>
             {userName.charAt(0).toUpperCase()}
             {splitedName.length >= 2 && splitedName[splitedName.length - 1].charAt(0).toUpperCase()}

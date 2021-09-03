@@ -1,3 +1,6 @@
+@import "./variables.scss";
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -5,7 +8,7 @@
 }
 
 body {
-  background: #f8f8f8;
+  background: $background;
   color: #29292e;
 }
 
@@ -16,7 +19,9 @@ textarea {
   font: 400 16px "Roboto", sans-serif;
 }
 
-@import "./variables.scss";
-
 @import "./components/Header.module.scss";
 @import "./components/Footer.module.scss";
+@import "./components/TeamsItem.module.scss";
+@import "./components/MyTeams.module.scss";
+
+@import "./pages/index.module.scss";
