@@ -1,10 +1,9 @@
 import React from "react";
 
+import TeamProps from "../hooks/useTeamProps";
+
 type TeamsItemProps = {
-  team: {
-    name: string;
-    description: string;
-  };
+  team: TeamProps;
 };
 
 const TeamsItem: React.FC<TeamsItemProps> = ({ team }) => {

@@ -1,25 +1,21 @@
 import React from "react";
 import Image from "next/image";
 
+import TeamProps from "../hooks/useTeamProps";
+
 import SortIcon from "../assets/icons/icons8-sort.png";
 
 import TeamsItem from "./TeamsItem";
+import Card from "./Card";
 
 type MyTeamsProps = {
-  myTeams: {
-    name: string;
-    description: string;
-  }[];
+  myTeams: TeamProps[];
 };
 
 const MyTeams: React.FC<MyTeamsProps> = ({ myTeams }) => {
   return (
-    <div className="my-teams">
-      <span className="header">
-        <p>My Teams</p>
-        <button>+</button>
-      </span>
-      <span className="main">
+    <Card title="My Teams" hasCreateButton={true} className="my-teams">
+      <div className="teams-table">
         <div className="sorter">
           <span title="Sort Teams by Name">
             <p>Name</p>
@@ -50,8 +46,8 @@ const MyTeams: React.FC<MyTeamsProps> = ({ myTeams }) => {
             <TeamsItem key={id} team={team} />
           ))}
         </ul>
-      </span>
-    </div>
+      </div>
+    </Card>
   );
 };
 
