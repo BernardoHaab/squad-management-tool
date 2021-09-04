@@ -2,8 +2,10 @@ import type { NextPage } from "next";
 
 import Footer from "../src/components/Footer";
 import Header from "../src/components/Header";
+import HighlightedPlayers from "../src/components/HighlightedPlayers";
 import MyTeams from "../src/components/MyTeams";
 import TopFive from "../src/components/TopFive";
+import PlayerProps from "../src/hooks/usePlayerProps";
 
 const Home: NextPage = () => {
   const myTeams = [
@@ -21,6 +23,9 @@ const Home: NextPage = () => {
     { name: "Liverpool", description: "Liverpool Squad", avgAge: 27.3 },
   ];
 
+  const mostPicked: PlayerProps = { name: "Cristiano Ronaldo", percetage: 75 };
+  const lessPicked: PlayerProps = { name: "Cristiano Ronaldo", percetage: 75 };
+
   return (
     <div className="page-home">
       <Header userName="Bernardo Haab" />
@@ -31,7 +36,7 @@ const Home: NextPage = () => {
           highestAvgAge={myTeams.slice(0, 5)}
           lowestAvgAge={myTeams.slice(5, 10)}
         />
-        <div className="highlighted-players">Highlighted Players</div>
+        <HighlightedPlayers mostPicked={mostPicked} lessPicked={lessPicked} />
       </main>
 
       <Footer />
