@@ -1,5 +1,5 @@
 import React from "react";
-import TeamProps from "../hooks/useTeamProps";
+import TeamProps from "../types/useTeamProps";
 
 import Card from "./Card";
 import TopFiveList from "./TopFiveList";

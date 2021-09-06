@@ -1,6 +1,6 @@
 import React from "react";
 
-import TeamProps from "../hooks/useTeamProps";
+import TeamProps from "../types/useTeamProps";
 
 type TopFiveListProps = {
   title: string;

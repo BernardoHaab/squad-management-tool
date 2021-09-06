@@ -1,0 +1,52 @@
+.create-team {
+  main {
+    padding: 40px;
+  }
+
+  form {
+    padding: 32px 158px;
+
+    .inputs-container {
+      display: flex;
+      flex-flow: row wrap;
+      row-gap: 28px;
+      justify-content: space-between;
+      margin-bottom: 60px;
+    }
+
+    label {
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    input,
+    textarea {
+      padding: 12px 8px;
+      border-radius: 2px;
+      border: 1px solid #d8d8d8;
+    }
+
+    textarea {
+      height: 204px;
+    }
+
+    h3 {
+      margin: 0 auto;
+      margin-bottom: 64px;
+      width: max-content;
+      color: #8b8b8b;
+    }
+
+    .dual-input {
+      display: flex;
+      flex-direction: column;
+      row-gap: 26px;
+
+      width: 45%;
+
+      .tags-wrapper {
+        width: 100%;
+      }
+    }
+  }
+}

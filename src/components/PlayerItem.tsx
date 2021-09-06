@@ -1,32 +1,30 @@
 import React from "react";
+import PlayerProps from "../types/usePlayerProps";
 
 type PlayerItemProps = {
-  title: string;
-  player: {
-    name: string;
-    percetage: number;
-  };
+  player: PlayerProps;
+  addPlayer: (player: PlayerProps) => void;
 };
 
-const PlayerItem: React.FC<PlayerItemProps> = ({ title, player }) => {
-  const splitedName = player.name.split(" ");
-
+const PlayerItem: React.FC<PlayerItemProps> = ({ player, addPlayer }) => {
   return (
-    <div className="player-item">
-      <h1>{title}</h1>
-
-      <div className="player">
-        <div className="player-hover">
-          <div className="player-initials">
-            {player.name.charAt(0).toUpperCase()}
-            {splitedName.length >= 2 &&
-              splitedName[splitedName.length - 1].charAt(0).toUpperCase()}
-          </div>
-        </div>
-        <div className="percetage">
-          <p>{player.percetage}% &nbsp;&nbsp;</p>
-        </div>
-      </div>
+    <div onClick={() => addPlayer(player)} className="player-item">
+      <span>
+        <span>
+          <h4>Name: </h4>
+          <p>{player.name}</p>
+        </span>
+        <span>
+          <h4>Age: </h4>
+          <p>{player.age}</p>
+        </span>
+      </span>
+      <span>
+        <span>
+          <h4>Nacionality: </h4>
+          <p>{player.nacionality}</p>
+        </span>
+      </span>
     </div>
   );
 };

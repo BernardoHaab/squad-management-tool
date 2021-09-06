@@ -19,6 +19,15 @@ textarea {
   font: 400 16px "Roboto", sans-serif;
 }
 
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+textarea {
+  resize: none;
+}
+
 @import "./components/Header.module.scss";
 @import "./components/Footer.module.scss";
 @import "./components/Card.module.scss";
@@ -27,6 +36,15 @@ textarea {
 @import "./components/TopFive.module.scss";
 @import "./components/TopFiveList.module.scss";
 @import "./components/HighlightedPlayers.module.scss";
+@import "./components/HighlightedPlayerItem.module.scss";
 @import "./components/PlayerItem.module.scss";
+@import "./components/RadioInput.module.scss";
+@import "./components/InputWrapper.module.scss";
+@import "./components/TagsBoxmodule.scss";
+@import "./components/Tag.module.scss";
+@import "./components/FormationField.module.scss";
+@import "./components/FieldRow.module.scss";
+@import "./components/PlayerFormationCard.module.scss";
 
 @import "./pages/index.module.scss";
+@import "./pages/CreateTeam.module.scss";

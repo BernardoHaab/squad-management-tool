@@ -1,0 +1,19 @@
+.tag {
+  background: $red;
+  padding: 6px;
+  padding-left: 12px;
+  width: max-content;
+
+  border-radius: 18px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 12px;
+
+  color: $white;
+
+  span {
+    cursor: pointer;
+  }
+}

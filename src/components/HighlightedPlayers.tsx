@@ -1,7 +1,7 @@
 import React from "react";
 
-import PlayerProps from "../hooks/usePlayerProps";
-import PlayerItem from "./PlayerItem";
+import PlayerProps from "../types/usePlayerProps";
+import HighlightedPlayerItem from "./HighlightedPlayerItem";
 
 type HighlightedPlayersProps = {
   mostPicked: PlayerProps;
@@ -14,12 +14,12 @@ const HighlightedPlayers: React.FC<HighlightedPlayersProps> = ({
 }) => {
   return (
     <div className="highlighted-container">
-      <PlayerItem title="Most picked player" player={mostPicked} />
+      <HighlightedPlayerItem title="Most picked player" player={mostPicked} />
       <div className="football-field">
         <hr />
         <div className="circle"></div>
       </div>
-      <PlayerItem title="Less picked player" player={lessPicked} />
+      <HighlightedPlayerItem title="Less picked player" player={lessPicked} />
     </div>
   );
 };

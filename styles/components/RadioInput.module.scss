@@ -1,0 +1,32 @@
+.radio-input {
+  display: none;
+
+  &:checked ~ .radiobox {
+    background: linear-gradient(to bottom, $lightPurple, $darkPurple);
+  }
+
+  &:checked ~ #label-text {
+    color: $red;
+  }
+}
+
+.radio-container {
+  display: flex;
+  flex-direction: row;
+  column-gap: 46px;
+}
+
+.radio-label {
+  display: flex;
+  flex-direction: row;
+  color: #cccccc;
+}
+
+.radiobox {
+  display: block;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  border: 1px solid #8b8b8b;
+  margin-right: 10px;
+}

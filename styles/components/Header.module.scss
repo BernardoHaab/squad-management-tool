@@ -7,6 +7,7 @@ header {
   flex-direction: row;
   justify-content: space-between;
   padding: 8px 40px;
+
   span {
     display: flex;
     flex-direction: row;
@@ -23,6 +24,10 @@ header {
         display: none;
       }
     }
+  }
+
+  span:first-child {
+    cursor: pointer;
   }
 
   .user-image {

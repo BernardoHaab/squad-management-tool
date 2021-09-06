@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-import TeamProps from "../hooks/useTeamProps";
+import TeamProps from "../types/useTeamProps";
 
 import SortIcon from "../assets/icons/icons8-sort.png";
 

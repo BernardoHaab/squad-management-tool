@@ -1,0 +1,23 @@
+.player-formation-card {
+  padding: 5px;
+  border-radius: 50%;
+  border: 1px dashed #a87ecb;
+  width: min-content;
+  height: min-content;
+  cursor: pointer;
+  z-index: 100;
+
+  > div {
+    display: flex;
+    background: #d19abc;
+    border: 1px solid #6c1f51;
+    border-radius: 50%;
+    padding: 1.5vw;
+    width: max-content;
+    color: $white;
+
+    // @media (min-width: 1390px) {
+    //   padding: 1.5vw;
+    // }
+  }
+}

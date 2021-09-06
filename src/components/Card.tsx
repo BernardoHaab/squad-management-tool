@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 type CardProps = {
   title: string;
@@ -17,7 +18,11 @@ const TopFive: React.FC<CardProps> = ({
     <div className={`card-container ${className}`}>
       <span className="header">
         <p>{title}</p>
-        {hasCreateButton && <button>+</button>}
+        {hasCreateButton && (
+          <button>
+            <Link href="/CreateTeam">+</Link>{" "}
+          </button>
+        )}
       </span>
 
       <div className="main">{children}</div>

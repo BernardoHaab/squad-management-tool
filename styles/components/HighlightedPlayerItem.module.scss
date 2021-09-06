@@ -1,0 +1,54 @@
+.highlighted-player-item {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  row-gap: 16px;
+  z-index: 100;
+
+  .player {
+    display: flex;
+    flex-direction: row;
+
+    cursor: pointer;
+
+    .player-initials {
+      width: 120px;
+      height: 120px;
+      background: $white;
+      color: $black;
+
+      border-radius: 50%;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      font-weight: bold;
+      font-size: 2.4rem;
+
+      border: 2px solid $red;
+    }
+
+    .percetage {
+      height: min-content;
+      font-weight: 500;
+      font-size: 1.2rem;
+      border-bottom: 1px solid $white;
+    }
+  }
+
+  .player-hover {
+    padding: 2px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    // background-color: red;
+    border: 2px dashed transparent;
+  }
+  .player:hover .player-hover {
+    border: 2px dashed black;
+  }
+}
