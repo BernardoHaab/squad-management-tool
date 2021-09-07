@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 import TeamProps from "../types/useTeamProps";
 
@@ -17,9 +18,17 @@ const TeamsItem: React.FC<TeamsItemProps> = ({ team }) => {
             <i title="Delete" className="material-icons">
               delete
             </i>
-            <i title="Edit" className="material-icons">
-              edit
-            </i>
+            <Link
+              href={{
+                pathname: "/CreateTeam",
+                query: { editingTeamId: team.id },
+              }}
+              passHref
+            >
+              <i title="Edit" className="material-icons">
+                edit
+              </i>
+            </Link>
           </div>
         </span>
       </div>

@@ -1,6 +1,7 @@
 import PlayerProps from "./usePlayerProps";
 
 type TeamProps = {
+  id?: string;
   name: string;
   website: string;
   description?: string;

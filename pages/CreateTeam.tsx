@@ -1,4 +1,12 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { useRouter } from "next/router";
+import { uuid } from "uuidv4";
 
 import Footer from "../src/components/Footer";
 import Header from "../src/components/Header";
@@ -11,12 +19,9 @@ import PlayerProps from "../src/types/usePlayerProps";
 import PlayerItem from "../src/components/PlayerItem";
 import FormationField from "../src/components/FormationField";
 import TeamProps from "../src/types/useTeamProps";
+import GlobalContext from "../src/context/GlobalContext";
 
-type CreateTeamProps = {
-  editingTeam?: TeamProps;
-};
-
-const CreateTeam: React.FC<CreateTeamProps> = ({ editingTeam }) => {
+const CreateTeam: React.FC = () => {
   const players: PlayerProps[] = [
     { name: "Cristiano Ronaldo", age: 32, nacionality: "Portugal" },
     { name: "Ronaldo Fenomeno", age: 44, nacionality: "Brasil" },
@@ -33,6 +38,8 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ editingTeam }) => {
     },
   ];
 
+  const router = useRouter();
+  const { myTeams, setMyTeams } = useContext(GlobalContext);
   const [searchedPlayers, setSearchedPlayers] = useState<PlayerProps[]>([]);
   const [team, setTeam] = useState<TeamProps>({
     name: "",
@@ -64,6 +71,30 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ editingTeam }) => {
     );
   }
 
+  function handleOnSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    hasRequidFields() && saveEditedTeam();
+
+    router.push("/");
+  }
+
+  function getUpdatedMyTeams() {
+    return myTeams.map((myTeam) => (myTeam.id === team.id ? team : myTeam));
+  }
+
+  function hasRequidFields() {
+    return team.name.trim().length > 0;
+  }
+
+  function saveEditedTeam() {
+    if (team.id) {
+      setMyTeams(getUpdatedMyTeams());
+    } else {
+      setMyTeams([...myTeams, { ...team, id: uuid() }]);
+    }
+  }
+
   function addTag(text: string) {
     const currentTags = team.tags?.length !== undefined ? team.tags : [];
     setTeam({ ...team, tags: [...currentTags, text] });
@@ -81,12 +112,20 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ editingTeam }) => {
     setTeam({ ...team, players: [...currentPlayers, player] });
   }
 
+  function getTeam(teamId: string | string[]) {
+    return myTeams.find((team) => team.id === teamId);
+  }
+
   useEffect(() => {
-    if (editingTeam != undefined) {
-      setTeam(editingTeam);
-      return;
+    const { editingTeamId } = router.query;
+    console.log(editingTeamId);
+
+    if (editingTeamId != undefined) {
+      const editingTeam = getTeam(editingTeamId);
+
+      setTeam(editingTeam !== undefined ? editingTeam : team);
     }
-  }, [editingTeam]);
+  }, [router.query]);
 
   useEffect(() => {
     if (team.players?.length) {
@@ -100,7 +139,7 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ editingTeam }) => {
       <Header userName="Bernardo Haab" />
       <main>
         <Card title="Create your team">
-          <form>
+          <form onSubmit={handleOnSubmit}>
             <h3>TEAM INFORMATION</h3>
             <div className="inputs-container">
               <InputWrapper textLabel="Team name" labelFor="name">
@@ -110,15 +149,19 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ editingTeam }) => {
                   placeholder="Insert team name"
                   type="text"
                   onChange={handleInputChange}
+                  required
+                  value={team.name}
                 />
               </InputWrapper>
               <InputWrapper textLabel="Team website" labelFor="website">
                 <input
                   placeholder="http://myteam.com"
-                  type="text"
                   id="website"
                   name="website"
+                  type="url"
                   onChange={handleInputChange}
+                  required
+                  value={team.website}
                 />
               </InputWrapper>
 
@@ -127,6 +170,7 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ editingTeam }) => {
                   id="description"
                   name="description"
                   onChange={handleInputChange}
+                  value={team.description}
                 />
               </InputWrapper>
 
@@ -138,12 +182,14 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ editingTeam }) => {
                       changeEvent={handleInputChange}
                       textLabel="Real"
                       inputValue="real"
+                      required
                     />
                     <RadioInput
                       checked={team.teamType == "fantasy"}
                       changeEvent={handleInputChange}
                       textLabel="Fantasy"
                       inputValue="fantasy"
+                      required
                     />
                   </div>
                 </InputWrapper>
@@ -176,6 +222,9 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ editingTeam }) => {
                 </ul>
               </InputWrapper>
             </div>
+            <button className="save-button" type="submit">
+              SAVE
+            </button>
           </form>
         </Card>
       </main>
