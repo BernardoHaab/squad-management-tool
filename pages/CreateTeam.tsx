@@ -7,6 +7,7 @@ import React, {
   useState,
 } from "react";
 import { useRouter } from "next/router";
+import { GetStaticProps } from "next";
 import { uuid } from "uuidv4";
 
 import Footer from "../src/components/Footer";
@@ -22,12 +23,16 @@ import FormationField from "../src/components/FormationField";
 import TeamProps from "../src/types/useTeamProps";
 import GlobalContext from "../src/context/GlobalContext";
 
-const CreateTeam: React.FC = () => {
-  const players: PlayerProps[] = [
-    { name: "Cristiano Ronaldo", age: 32, nacionality: "Portugal" },
-    { name: "Ronaldo Fenomeno", age: 44, nacionality: "Brasil" },
-    { name: "Ronaldinho Gaúcho", age: 41, nacionality: "Brasil" },
-  ];
+type CreateTeamProps = {
+  players: PlayerProps[];
+};
+
+const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
+  // const players: PlayerProps[] = [
+  //   { name: "Cristiano Ronaldo", age: 32, nacionality: "Portugal" },
+  //   { name: "Ronaldo Fenomeno", age: 44, nacionality: "Brasil" },
+  //   { name: "Ronaldinho Gaúcho", age: 41, nacionality: "Brasil" },
+  // ];
   const formations = [
     {
       name: "3-4-3",
@@ -66,8 +71,10 @@ const CreateTeam: React.FC = () => {
     }
 
     setSearchedPlayers(
-      players.filter((player) =>
-        player.name.toLowerCase().includes(value.toLowerCase())
+      players.filter(
+        (player) =>
+          player.firstname.toLowerCase().includes(value.toLowerCase()) ||
+          player.lastname.toLowerCase().includes(value.toLowerCase())
       )
     );
   }
@@ -80,9 +87,7 @@ const CreateTeam: React.FC = () => {
     router.push("/");
   }
 
-  function handleEnterClick(
-    e: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
+  function handleEnterClick(e: KeyboardEvent<HTMLFormElement>) {
     e.key === "Enter" && e.preventDefault();
   }
 
@@ -146,7 +151,7 @@ const CreateTeam: React.FC = () => {
       <Header userName="Bernardo Haab" />
       <main>
         <Card title="Create your team">
-          <form onSubmit={handleOnSubmit}>
+          <form onKeyDown={handleEnterClick} onSubmit={handleOnSubmit}>
             <h3>TEAM INFORMATION</h3>
             <div className="inputs-container">
               <InputWrapper textLabel="Team name" labelFor="name">
@@ -158,7 +163,6 @@ const CreateTeam: React.FC = () => {
                   onChange={handleInputChange}
                   required
                   value={team.name}
-                  onKeyDown={handleEnterClick}
                 />
               </InputWrapper>
               <InputWrapper textLabel="Team website" labelFor="website">
@@ -170,7 +174,6 @@ const CreateTeam: React.FC = () => {
                   onChange={handleInputChange}
                   required
                   value={team.website}
-                  onKeyDown={handleEnterClick}
                 />
               </InputWrapper>
 
@@ -180,7 +183,6 @@ const CreateTeam: React.FC = () => {
                   name="description"
                   onChange={handleInputChange}
                   value={team.description}
-                  onKeyDown={handleEnterClick}
                 />
               </InputWrapper>
 
@@ -218,14 +220,13 @@ const CreateTeam: React.FC = () => {
               <InputWrapper textLabel="Formation">
                 <FormationField selectedFormation={formations[0].rows} />
               </InputWrapper>
-              <InputWrapper textLabel="Search Players">
-                <input
-                  onChange={handleSearchChange}
-                  type="text"
-                  onKeyDown={handleEnterClick}
-                />
+              <InputWrapper
+                customClass="players-container"
+                textLabel="Search Players"
+              >
+                <input onChange={handleSearchChange} type="text" />
 
-                <ul>
+                <ul className="players-list">
                   {searchedPlayers.map((player, id) => (
                     <PlayerItem
                       addPlayer={addPlayer}
@@ -245,6 +246,33 @@ const CreateTeam: React.FC = () => {
       <Footer />
     </div>
   );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  console.log("ssa");
+
+  const res = await fetch(
+    `https://app.sportdataapi.com/api/v1/soccer/players?apikey=${process.env.API_KEY}&country_id=25`
+  );
+
+  const resJson = await res.json();
+
+  const players = resJson.data;
+
+  if (!players) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      players,
+    },
+  };
 };
 
 export default CreateTeam;

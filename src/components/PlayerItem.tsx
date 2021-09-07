@@ -12,7 +12,9 @@ const PlayerItem: React.FC<PlayerItemProps> = ({ player, addPlayer }) => {
       <span>
         <span>
           <h4>Name: </h4>
-          <p>{player.name}</p>
+          <p>
+            {player.firstname} {player.lastname}
+          </p>
         </span>
         <span>
           <h4>Age: </h4>
@@ -22,7 +24,7 @@ const PlayerItem: React.FC<PlayerItemProps> = ({ player, addPlayer }) => {
       <span>
         <span>
           <h4>Nacionality: </h4>
-          <p>{player.nacionality}</p>
+          <p>{player.country.name}</p>
         </span>
       </span>
     </div>

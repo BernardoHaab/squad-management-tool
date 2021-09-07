@@ -100,16 +100,16 @@ const Home: NextPage = () => {
   //   },
   // ];
 
-  const mostPicked: PlayerProps = {
-    name: "Cristiano Ronaldo",
-    percetage: 75,
-    age: 28,
-  };
-  const lessPicked: PlayerProps = {
-    name: "Cristiano Ronaldo",
-    percetage: 75,
-    age: 28,
-  };
+  // const mostPicked: PlayerProps = {
+  //   firstname: "Cristiano Ronaldo",
+  //   percetage: 75,
+  //   age: 28,
+  // };
+  // const lessPicked: PlayerProps = {
+  //   name: "Cristiano Ronaldo",
+  //   percetage: 75,
+  //   age: 28,
+  // };
   const { myTeams } = useContext(GlobalContext);
   const [sortedHighest, setSortedHighest] = useState<TeamProps[]>([]);
   const [sortedLowest, setSortedLowest] = useState<TeamProps[]>([]);
@@ -126,7 +126,7 @@ const Home: NextPage = () => {
       <main>
         <MyTeams myTeams={myTeams} />
         <TopFive highestAvgAge={sortedHighest} lowestAvgAge={sortedLowest} />
-        <HighlightedPlayers mostPicked={mostPicked} lessPicked={lessPicked} />
+        {/* <HighlightedPlayers mostPicked={mostPicked} lessPicked={lessPicked} /> */}
       </main>
 
       <Footer />
