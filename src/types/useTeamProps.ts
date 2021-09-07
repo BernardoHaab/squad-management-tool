@@ -8,7 +8,7 @@ type TeamProps = {
   tags?: string[];
 
   players?: PlayerProps[]
-  avgAge?: number;
+  avgAge: number;
 
 }
 

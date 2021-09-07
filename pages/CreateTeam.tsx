@@ -38,6 +38,7 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ editingTeam }) => {
     name: "",
     website: "",
     teamType: "fantasy",
+    avgAge: 0,
   });
 
   function handleInputChange(
