@@ -15,7 +15,11 @@ const TagsBox: React.FC<TagsBoxProps> = ({ tags, addTag, removeTag }) => {
     const { key } = e;
     const { value } = e.target as any;
 
-    if ((key === "Enter" || key === ";") && value) {
+    const pressedEnter = key === "Enter";
+
+    pressedEnter && e.preventDefault();
+
+    if ((pressedEnter || key === ";") && value) {
       addTag(value);
     }
 
@@ -23,10 +27,6 @@ const TagsBox: React.FC<TagsBoxProps> = ({ tags, addTag, removeTag }) => {
       removeTag(tags.length - 1);
     }
   }
-
-  useEffect(() => {
-    setNewTag("");
-  }, [tags]);
 
   return (
     <label htmlFor="new-tag" className="tags-box">

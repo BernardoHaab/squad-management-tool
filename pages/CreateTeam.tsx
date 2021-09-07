@@ -1,6 +1,7 @@
 import React, {
   ChangeEvent,
   FormEvent,
+  KeyboardEvent,
   useContext,
   useEffect,
   useState,
@@ -79,6 +80,12 @@ const CreateTeam: React.FC = () => {
     router.push("/");
   }
 
+  function handleEnterClick(
+    e: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
+    e.key === "Enter" && e.preventDefault();
+  }
+
   function getUpdatedMyTeams() {
     return myTeams.map((myTeam) => (myTeam.id === team.id ? team : myTeam));
   }
@@ -151,6 +158,7 @@ const CreateTeam: React.FC = () => {
                   onChange={handleInputChange}
                   required
                   value={team.name}
+                  onKeyDown={handleEnterClick}
                 />
               </InputWrapper>
               <InputWrapper textLabel="Team website" labelFor="website">
@@ -162,6 +170,7 @@ const CreateTeam: React.FC = () => {
                   onChange={handleInputChange}
                   required
                   value={team.website}
+                  onKeyDown={handleEnterClick}
                 />
               </InputWrapper>
 
@@ -171,6 +180,7 @@ const CreateTeam: React.FC = () => {
                   name="description"
                   onChange={handleInputChange}
                   value={team.description}
+                  onKeyDown={handleEnterClick}
                 />
               </InputWrapper>
 
@@ -209,7 +219,11 @@ const CreateTeam: React.FC = () => {
                 <FormationField selectedFormation={formations[0].rows} />
               </InputWrapper>
               <InputWrapper textLabel="Search Players">
-                <input onChange={handleSearchChange} type="text" />
+                <input
+                  onChange={handleSearchChange}
+                  type="text"
+                  onKeyDown={handleEnterClick}
+                />
 
                 <ul>
                   {searchedPlayers.map((player, id) => (

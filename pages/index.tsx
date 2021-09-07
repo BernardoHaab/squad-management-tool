@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useContext } from "react";
 
@@ -111,6 +111,13 @@ const Home: NextPage = () => {
     age: 28,
   };
   const { myTeams } = useContext(GlobalContext);
+  const [sortedHighest, setSortedHighest] = useState<TeamProps[]>([]);
+  const [sortedLowest, setSortedLowest] = useState<TeamProps[]>([]);
+
+  useEffect(() => {
+    setSortedHighest(myTeams.sort((a, b) => b.avgAge - a.avgAge).slice(0, 5));
+    setSortedLowest(myTeams.sort((a, b) => a.avgAge - b.avgAge).slice(0, 5));
+  }, [myTeams]);
 
   return (
     <div className="page-home">
@@ -118,10 +125,7 @@ const Home: NextPage = () => {
 
       <main>
         <MyTeams myTeams={myTeams} />
-        <TopFive
-          highestAvgAge={myTeams.slice(0, 5)}
-          lowestAvgAge={myTeams.slice(5, 10)}
-        />
+        <TopFive highestAvgAge={sortedHighest} lowestAvgAge={sortedLowest} />
         <HighlightedPlayers mostPicked={mostPicked} lessPicked={lessPicked} />
       </main>
 
