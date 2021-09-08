@@ -8,7 +8,8 @@ import React, {
 } from "react";
 import { useRouter } from "next/router";
 import { GetStaticProps } from "next";
-import { uuid } from "uuidv4";
+import { v4 } from "uuid";
+
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -87,10 +88,17 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
   function handleOnSubmit(e: FormEvent) {
     e.preventDefault();
 
+    console.log(team);
+    console.log(team);
+
     if (hasRequidFields()) {
+      console.log("vai");
+
       saveEditedTeam();
 
       router.push("/");
+    } else {
+      alert("Please complete your team!");
     }
   }
 
@@ -113,10 +121,19 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
   }
 
   function saveEditedTeam() {
+    console.log(team);
+    console.log(team.id);
+
     if (team.id) {
+      console.log("team.id");
+      console.log(team);
+
       setMyTeams(getUpdatedMyTeams());
     } else {
-      setMyTeams([...myTeams, { ...team, id: uuid() }]);
+      console.log("else");
+      console.log(team);
+
+      setMyTeams([...myTeams, { ...team, id: v4() }]);
     }
   }
 
@@ -138,7 +155,13 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
   ) {
     const currentPlayers = team.players;
     currentPlayers[formationLine][formationColumn] = playerToAdd;
-    setTeam({ ...team, players: currentPlayers });
+    console.log("addPlayer");
+    console.log(team);
+    const currentTeam = team;
+    const updatedTeam = { ...currentTeam, players: currentPlayers };
+    console.log(updatedTeam);
+
+    setTeam(updatedTeam);
   }
 
   function getTeam(teamId: string | string[]) {
@@ -182,6 +205,10 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
     setTeam({ ...team, avgAge: ageSum / team.players?.length });
   }, [team.players]);
 
+  useEffect(() => {
+    console.log(team);
+  }, [team]);
+
   return (
     <div className="create-team">
       <Header userName="Bernardo Haab" />
@@ -197,7 +224,6 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
                   placeholder="Insert team name"
                   type="text"
                   onChange={handleInputChange}
-                  required
                   value={team.name}
                 />
               </InputWrapper>
@@ -208,7 +234,6 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
                   name="website"
                   type="url"
                   onChange={handleInputChange}
-                  required
                   value={team.website}
                 />
               </InputWrapper>
@@ -230,14 +255,12 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
                       changeEvent={handleInputChange}
                       textLabel="Real"
                       inputValue="real"
-                      required
                     />
                     <RadioInput
                       checked={team.teamType == "fantasy"}
                       changeEvent={handleInputChange}
                       textLabel="Fantasy"
                       inputValue="fantasy"
-                      required
                     />
                   </div>
                 </InputWrapper>
@@ -267,9 +290,16 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
                   <input onChange={handleSearchChange} type="text" />
 
                   <ul className="players-list">
-                    {searchedPlayers.map((player) => (
-                      <PlayerItem player={player} key={player.player_id} />
-                    ))}
+                    {searchedPlayers.length > 0 ? (
+                      searchedPlayers.map((player) => (
+                        <PlayerItem player={player} key={player.player_id} />
+                      ))
+                    ) : (
+                      <div className="placeholder-wrapper">
+                        Search for players, Chose and Drag them to the desired
+                        position!
+                      </div>
+                    )}
                   </ul>
                 </InputWrapper>
               </DndProvider>
@@ -292,7 +322,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   const resJson = await res.json();
 
-  const players = resJson.data;
+  const players = resJson.data.slice(0, 150);
 
   if (!players) {
     return {

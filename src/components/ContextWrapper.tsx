@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import GlobalContext from "../context/GlobalContext";
+import PlayerProps from "../types/usePlayerProps";
 import TeamProps from "../types/useTeamProps";
 
 type ContextWrapperProps = {
@@ -13,9 +14,20 @@ const ContextWrapper: React.FC<ContextWrapperProps> = ({
   teamsList,
 }) => {
   const [myTeams, setMyTeams] = useState<TeamProps[]>(teamsList);
+  const [mostPicked, setMostPicked] = useState<PlayerProps | null>(null);
+  const [lessPicked, setLessPicked] = useState<PlayerProps | null>(null);
 
   return (
-    <GlobalContext.Provider value={{ myTeams, setMyTeams }}>
+    <GlobalContext.Provider
+      value={{
+        myTeams,
+        setMyTeams,
+        mostPicked,
+        setMostPicked,
+        lessPicked,
+        setLessPicked,
+      }}
+    >
       {children}
     </GlobalContext.Provider>
   );

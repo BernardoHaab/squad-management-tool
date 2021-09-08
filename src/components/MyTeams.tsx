@@ -41,11 +41,17 @@ const MyTeams: React.FC<MyTeamsProps> = ({ myTeams }) => {
             </i>
           </span>
         </div>
-        <ul className="teams-list">
-          {myTeams.map((team, id) => (
-            <TeamsItem key={id} team={team} />
-          ))}
-        </ul>
+        {myTeams.length > 0 ? (
+          <ul className="teams-list">
+            {myTeams.map((team, id) => (
+              <TeamsItem key={id} team={team} />
+            ))}
+          </ul>
+        ) : (
+          <div className="placeholder-wrapper">
+            Try creating a team and see what happens.
+          </div>
+        )}
       </div>
     </Card>
   );

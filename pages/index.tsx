@@ -9,108 +9,10 @@ import MyTeams from "../src/components/MyTeams";
 import TopFive from "../src/components/TopFive";
 import GlobalContext from "../src/context/GlobalContext";
 
-import PlayerProps from "../src/types/usePlayerProps";
 import TeamProps from "../src/types/useTeamProps";
 
 const Home: NextPage = () => {
-  // const tempMyTeams: TeamProps[] = [
-  //   {
-  //     name: "Barcelona",
-  //     description: "Barcelona Squad",
-  //     avgAge: 32.4,
-  //     website: "http://site.com",
-  //     teamType: "fantasy",
-  //   },
-  //   {
-  //     name: "Real Madrid",
-  //     description: "Real Madrid Squad",
-  //     avgAge: 25.4,
-  //     website: "http://site.com",
-  //     teamType: "fantasy",
-  //   },
-  //   {
-  //     name: "Milan",
-  //     description: "Milan Squad",
-  //     avgAge: 25.6,
-  //     website: "http://site.com",
-  //     teamType: "fantasy",
-  //   },
-  //   {
-  //     name: "Liverpool",
-  //     description: "Liverpool Squad",
-  //     avgAge: 37.4,
-  //     website: "http://site.com",
-  //     teamType: "fantasy",
-  //   },
-  //   {
-  //     name: "Barcelona",
-  //     description: "Barcelona Squad",
-  //     avgAge: 22.4,
-  //     website: "http://site.com",
-  //     teamType: "fantasy",
-  //   },
-  //   {
-  //     name: "Real Madrid",
-  //     description: "Real Madrid Squad",
-  //     avgAge: 23.7,
-  //     website: "http://site.com",
-  //     teamType: "fantasy",
-  //   },
-  //   {
-  //     name: "Milan",
-  //     description: "Milan Squad",
-  //     avgAge: 23.4,
-  //     website: "http://site.com",
-  //     teamType: "fantasy",
-  //   },
-  //   {
-  //     name: "Liverpool",
-  //     description: "Liverpool Squad",
-  //     avgAge: 20,
-  //     website: "http://site.com",
-  //     teamType: "fantasy",
-  //   },
-  //   {
-  //     name: "Barcelona",
-  //     description: "Barcelona Squad",
-  //     avgAge: 21.5,
-  //     website: "http://site.com",
-  //     teamType: "fantasy",
-  //   },
-  //   {
-  //     name: "Real Madrid",
-  //     description: "Real Madrid Squad",
-  //     avgAge: 26,
-  //     website: "http://site.com",
-  //     teamType: "fantasy",
-  //   },
-  //   {
-  //     name: "Milan",
-  //     description: "Milan Squad",
-  //     avgAge: 27.4,
-  //     website: "http://site.com",
-  //     teamType: "fantasy",
-  //   },
-  //   {
-  //     name: "Liverpool",
-  //     description: "Liverpool Squad",
-  //     avgAge: 27.3,
-  //     website: "http://site.com",
-  //     teamType: "fantasy",
-  //   },
-  // ];
-
-  // const mostPicked: PlayerProps = {
-  //   firstname: "Cristiano Ronaldo",
-  //   percetage: 75,
-  //   age: 28,
-  // };
-  // const lessPicked: PlayerProps = {
-  //   name: "Cristiano Ronaldo",
-  //   percetage: 75,
-  //   age: 28,
-  // };
-  const { myTeams } = useContext(GlobalContext);
+  const { myTeams, mostPicked, lessPicked } = useContext(GlobalContext);
   const [sortedHighest, setSortedHighest] = useState<TeamProps[]>([]);
   const [sortedLowest, setSortedLowest] = useState<TeamProps[]>([]);
 
@@ -126,7 +28,7 @@ const Home: NextPage = () => {
       <main>
         <MyTeams myTeams={myTeams} />
         <TopFive highestAvgAge={sortedHighest} lowestAvgAge={sortedLowest} />
-        {/* <HighlightedPlayers mostPicked={mostPicked} lessPicked={lessPicked} /> */}
+        <HighlightedPlayers mostPicked={mostPicked} lessPicked={lessPicked} />
       </main>
 
       <Footer />
