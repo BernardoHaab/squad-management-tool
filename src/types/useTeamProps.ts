@@ -8,7 +8,7 @@ type TeamProps = {
   teamType: "fantasy" | "real";
   tags?: string[];
 
-  players?: PlayerProps[]
+  players: (PlayerProps | undefined)[][]
   avgAge: number;
 
 }

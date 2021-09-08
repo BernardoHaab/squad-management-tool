@@ -19,4 +19,8 @@ type CountryProps = {
   continent: string;
 }
 
+export type SelectablePlayerProps = {
+  isSelected: boolean;
+}
+
 export default PlayerProps;

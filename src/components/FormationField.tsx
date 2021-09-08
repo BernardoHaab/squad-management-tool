@@ -1,23 +1,34 @@
 import React from "react";
+import PlayerProps, { SelectablePlayerProps } from "../types/usePlayerProps";
 import FieldRow from "./FieldRow";
 
 type FormationFieldProps = {
-  selectedFormation: number[];
+  playersPositions: (PlayerProps | undefined)[][];
+  addPlayer: (
+    player: PlayerProps,
+    formationLine: number,
+    formationColumn: number
+  ) => void;
 };
 
 const FormationField: React.FC<FormationFieldProps> = ({
-  selectedFormation,
+  playersPositions,
+  addPlayer,
 }) => {
   return (
     <div className="formation-field">
-      {selectedFormation.map((row, id) => (
-        <FieldRow key={id} rowLenght={row} />
+      {playersPositions.map((playersLine, formationLine) => (
+        <FieldRow
+          key={formationLine}
+          playersLine={playersLine}
+          formationLine={formationLine}
+          addPlayer={addPlayer}
+        />
       ))}
       <div className="football-field">
         <hr />
         <div className="circle"></div>
       </div>
-      <FieldRow rowLenght={1} />
     </div>
   );
 };

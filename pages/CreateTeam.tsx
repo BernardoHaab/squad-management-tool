@@ -9,6 +9,8 @@ import React, {
 import { useRouter } from "next/router";
 import { GetStaticProps } from "next";
 import { uuid } from "uuidv4";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import Footer from "../src/components/Footer";
 import Header from "../src/components/Header";
@@ -17,7 +19,9 @@ import RadioInput from "../src/components/RadioInput";
 import InputWrapper from "../src/components/InputWrapper";
 import TagsBox from "../src/components/TagsBox";
 
-import PlayerProps from "../src/types/usePlayerProps";
+import PlayerProps, {
+  SelectablePlayerProps,
+} from "../src/types/usePlayerProps";
 import PlayerItem from "../src/components/PlayerItem";
 import FormationField from "../src/components/FormationField";
 import TeamProps from "../src/types/useTeamProps";
@@ -28,30 +32,29 @@ type CreateTeamProps = {
 };
 
 const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
-  // const players: PlayerProps[] = [
-  //   { name: "Cristiano Ronaldo", age: 32, nacionality: "Portugal" },
-  //   { name: "Ronaldo Fenomeno", age: 44, nacionality: "Brasil" },
-  //   { name: "Ronaldinho Gaúcho", age: 41, nacionality: "Brasil" },
-  // ];
   const formations = [
     {
-      name: "3-4-3",
-      rows: [3, 5, 3],
+      name: "3-5-3",
+      rows: [3, 5, 3, 1],
     },
     {
       name: "3-2-2-3",
-      rows: [3, 2, 2, 3],
+      rows: [3, 2, 2, 3, 1],
     },
   ];
 
   const router = useRouter();
   const { myTeams, setMyTeams } = useContext(GlobalContext);
-  const [searchedPlayers, setSearchedPlayers] = useState<PlayerProps[]>([]);
+  const [searchedPlayers, setSearchedPlayers] = useState<
+    (PlayerProps & SelectablePlayerProps)[]
+  >([]);
+  const [selectedFormation, setSelectedFormation] = useState(formations[0]);
   const [team, setTeam] = useState<TeamProps>({
     name: "",
     website: "",
     teamType: "fantasy",
     avgAge: 0,
+    players: getPlayersByFormation(),
   });
 
   function handleInputChange(
@@ -71,20 +74,24 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
     }
 
     setSearchedPlayers(
-      players.filter(
-        (player) =>
-          player.firstname.toLowerCase().includes(value.toLowerCase()) ||
-          player.lastname.toLowerCase().includes(value.toLowerCase())
-      )
+      players
+        .filter(
+          (player) =>
+            player.firstname.toLowerCase().startsWith(value.toLowerCase()) ||
+            player.lastname.toLowerCase().startsWith(value.toLowerCase())
+        )
+        .map((player) => ({ ...player, isSelected: false }))
     );
   }
 
   function handleOnSubmit(e: FormEvent) {
     e.preventDefault();
 
-    hasRequidFields() && saveEditedTeam();
+    if (hasRequidFields()) {
+      saveEditedTeam();
 
-    router.push("/");
+      router.push("/");
+    }
   }
 
   function handleEnterClick(e: KeyboardEvent<HTMLFormElement>) {
@@ -96,7 +103,13 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
   }
 
   function hasRequidFields() {
-    return team.name.trim().length > 0;
+    const hasName = team.name.trim().length > 0;
+    const isWebsite =
+      /^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$/.test(
+        team.website
+      );
+    const hassAllPlayers = !team.players.some((el) => el.includes(undefined));
+    return hasName && isWebsite && hassAllPlayers;
   }
 
   function saveEditedTeam() {
@@ -118,19 +131,36 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
     }
   }
 
-  function addPlayer(player: PlayerProps) {
-    const currentPlayers =
-      team.players?.length !== undefined ? team.players : [];
-    setTeam({ ...team, players: [...currentPlayers, player] });
+  function addPlayer(
+    playerToAdd: PlayerProps,
+    formationLine: number,
+    formationColumn: number
+  ) {
+    const currentPlayers = team.players;
+    currentPlayers[formationLine][formationColumn] = playerToAdd;
+    setTeam({ ...team, players: currentPlayers });
   }
 
   function getTeam(teamId: string | string[]) {
     return myTeams.find((team) => team.id === teamId);
   }
 
+  function getPlayersByFormation() {
+    return Array(selectedFormation.rows.length)
+      .fill(0)
+      .map((_, id) =>
+        Array<PlayerProps | undefined>(selectedFormation.rows[id]).fill(
+          undefined
+        )
+      );
+  }
+
+  useEffect(() => {
+    setTeam({ ...team, players: getPlayersByFormation() });
+  }, [selectedFormation]);
+
   useEffect(() => {
     const { editingTeamId } = router.query;
-    console.log(editingTeamId);
 
     if (editingTeamId != undefined) {
       const editingTeam = getTeam(editingTeamId);
@@ -140,10 +170,16 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
   }, [router.query]);
 
   useEffect(() => {
-    if (team.players?.length) {
-      const ageSum = team.players?.reduce((acc, player) => acc + player.age, 0);
-      setTeam({ ...team, avgAge: ageSum / team.players?.length });
-    }
+    const filteredPlayers = Array();
+    team.players.forEach((formationLine) => {
+      const filteredLine = formationLine.filter(
+        (player) => player != undefined
+      );
+      filteredPlayers.push(...filteredLine);
+    });
+
+    const ageSum = filteredPlayers.reduce((acc, player) => acc + player.age, 0);
+    setTeam({ ...team, avgAge: ageSum / team.players?.length });
   }, [team.players]);
 
   return (
@@ -217,25 +253,26 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
             </div>
             <h3>CONFIGURE SQUAD</h3>
             <div className="inputs-container">
-              <InputWrapper textLabel="Formation">
-                <FormationField selectedFormation={formations[0].rows} />
-              </InputWrapper>
-              <InputWrapper
-                customClass="players-container"
-                textLabel="Search Players"
-              >
-                <input onChange={handleSearchChange} type="text" />
+              <DndProvider backend={HTML5Backend}>
+                <InputWrapper textLabel="Formation">
+                  <FormationField
+                    addPlayer={addPlayer}
+                    playersPositions={team.players}
+                  />
+                </InputWrapper>
+                <InputWrapper
+                  customClass="players-container"
+                  textLabel="Search Players"
+                >
+                  <input onChange={handleSearchChange} type="text" />
 
-                <ul className="players-list">
-                  {searchedPlayers.map((player, id) => (
-                    <PlayerItem
-                      addPlayer={addPlayer}
-                      player={player}
-                      key={id}
-                    />
-                  ))}
-                </ul>
-              </InputWrapper>
+                  <ul className="players-list">
+                    {searchedPlayers.map((player) => (
+                      <PlayerItem player={player} key={player.player_id} />
+                    ))}
+                  </ul>
+                </InputWrapper>
+              </DndProvider>
             </div>
             <button className="save-button" type="submit">
               SAVE
@@ -249,8 +286,6 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  console.log("ssa");
-
   const res = await fetch(
     `https://app.sportdataapi.com/api/v1/soccer/players?apikey=${process.env.API_KEY}&country_id=25`
   );
