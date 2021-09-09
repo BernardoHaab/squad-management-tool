@@ -7,15 +7,15 @@ Project developed for the ReactJs test in the selection process of the  Frontend
 Clone the project and access the folder.
 
 ```bash
-  $ git clone https://github.com/BernardoHaab/squad-management-tool.git
-  $ cd squad-management-tool
+  git clone https://github.com/BernardoHaab/squad-management-tool.git
+  cd squad-management-tool
 ```
 
 Install all dependencies and run the project.
 
 ```bash
-  $ yarn add
-  $ yarn dev
+  yarn install
+  yarn dev
 ```
 
 Now you can access the app on your browser at the http:://localhost:3000/
