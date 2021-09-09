@@ -5,9 +5,10 @@ import TeamProps from "../types/useTeamProps";
 
 type TeamsItemProps = {
   team: TeamProps;
+  deleteTeam: (team: TeamProps) => void;
 };
 
-const TeamsItem: React.FC<TeamsItemProps> = ({ team }) => {
+const TeamsItem: React.FC<TeamsItemProps> = ({ team, deleteTeam }) => {
   return (
     <div className="teams-item">
       <div className="item">
@@ -15,7 +16,11 @@ const TeamsItem: React.FC<TeamsItemProps> = ({ team }) => {
         <span>
           <p className="description">{team.description}</p>
           <div className="actions">
-            <i title="Delete" className="material-icons">
+            <i
+              onClick={() => deleteTeam(team)}
+              title="Delete"
+              className="material-icons"
+            >
               delete
             </i>
             <Link

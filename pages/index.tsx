@@ -12,7 +12,8 @@ import GlobalContext from "../src/context/GlobalContext";
 import TeamProps from "../src/types/useTeamProps";
 
 const Home: NextPage = () => {
-  const { myTeams, mostPicked, lessPicked } = useContext(GlobalContext);
+  const { myTeams, setMyTeams, mostPicked, lessPicked } =
+    useContext(GlobalContext);
   const [sortedHighest, setSortedHighest] = useState<TeamProps[]>([]);
   const [sortedLowest, setSortedLowest] = useState<TeamProps[]>([]);
 
@@ -21,12 +22,17 @@ const Home: NextPage = () => {
     setSortedLowest(myTeams.sort((a, b) => a.avgAge - b.avgAge).slice(0, 5));
   }, [myTeams]);
 
+  function deleteTeam(team: TeamProps) {
+    const updatedTeam = myTeams.filter((t) => t !== team);
+    setMyTeams(updatedTeam);
+  }
+
   return (
     <div className="page-home">
       <Header userName="Bernardo Haab" />
 
       <main>
-        <MyTeams myTeams={myTeams} />
+        <MyTeams deleteTeam={deleteTeam} myTeams={myTeams} />
         <TopFive highestAvgAge={sortedHighest} lowestAvgAge={sortedLowest} />
         <HighlightedPlayers mostPicked={mostPicked} lessPicked={lessPicked} />
       </main>

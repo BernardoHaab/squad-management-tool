@@ -1,12 +1,12 @@
 import React from "react";
 import Link from "next/link";
 
-import PlayerProps from "../types/usePlayerProps";
+import { HighlightedPlayerProps } from "../types/usePlayerProps";
 import HighlightedPlayerItem from "./HighlightedPlayerItem";
 
 type HighlightedPlayersProps = {
-  mostPicked: PlayerProps | null;
-  lessPicked: PlayerProps | null;
+  mostPicked: HighlightedPlayerProps | null;
+  lessPicked: HighlightedPlayerProps | null;
 };
 
 const HighlightedPlayers: React.FC<HighlightedPlayersProps> = ({
@@ -15,21 +15,30 @@ const HighlightedPlayers: React.FC<HighlightedPlayersProps> = ({
 }) => {
   return (
     <div className="highlighted-container">
-      {mostPicked != null && lessPicked != null
+      {mostPicked !== null && lessPicked !== null
         ? MostLessPicked(mostPicked, lessPicked)
         : NoPlayer()}
     </div>
   );
 };
 
-const MostLessPicked = (mostPicked: PlayerProps, lessPicked: PlayerProps) => (
+const MostLessPicked = (
+  mostPicked: HighlightedPlayerProps,
+  lessPicked: HighlightedPlayerProps
+) => (
   <>
-    <HighlightedPlayerItem title="Most picked player" player={mostPicked} />
+    <HighlightedPlayerItem
+      title="Most picked player"
+      highlighted={mostPicked}
+    />
     <div className="football-field">
       <hr />
       <div className="circle"></div>
     </div>
-    <HighlightedPlayerItem title="Less picked player" player={lessPicked} />
+    <HighlightedPlayerItem
+      title="Less picked player"
+      highlighted={lessPicked}
+    />
   </>
 );
 

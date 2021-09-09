@@ -45,7 +45,8 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
   ];
 
   const router = useRouter();
-  const { myTeams, setMyTeams } = useContext(GlobalContext);
+  const { myTeams, setMyTeams, setMostPicked, setLessPicked } =
+    useContext(GlobalContext);
   const [searchedPlayers, setSearchedPlayers] = useState<
     (PlayerProps & SelectablePlayerProps)[]
   >([]);
@@ -88,12 +89,7 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
   function handleOnSubmit(e: FormEvent) {
     e.preventDefault();
 
-    console.log(team);
-    console.log(team);
-
     if (hasRequidFields()) {
-      console.log("vai");
-
       saveEditedTeam();
 
       router.push("/");
@@ -121,18 +117,9 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
   }
 
   function saveEditedTeam() {
-    console.log(team);
-    console.log(team.id);
-
     if (team.id) {
-      console.log("team.id");
-      console.log(team);
-
       setMyTeams(getUpdatedMyTeams());
     } else {
-      console.log("else");
-      console.log(team);
-
       setMyTeams([...myTeams, { ...team, id: v4() }]);
     }
   }
@@ -155,12 +142,12 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
   ) {
     const currentPlayers = team.players;
     currentPlayers[formationLine][formationColumn] = playerToAdd;
-    console.log("addPlayer");
-    console.log(team);
     const currentTeam = team;
-    const updatedTeam = { ...currentTeam, players: currentPlayers };
-    console.log(updatedTeam);
-
+    const updatedTeam = {
+      ...currentTeam,
+      players: currentPlayers,
+      avgAge: getAvgAge(currentTeam),
+    };
     setTeam(updatedTeam);
   }
 
@@ -192,7 +179,9 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
     }
   }, [router.query]);
 
-  useEffect(() => {
+  useEffect(() => console.log(team), [team]);
+
+  function getAvgAge(team: TeamProps) {
     const filteredPlayers = Array();
     team.players.forEach((formationLine) => {
       const filteredLine = formationLine.filter(
@@ -202,12 +191,9 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
     });
 
     const ageSum = filteredPlayers.reduce((acc, player) => acc + player.age, 0);
-    setTeam({ ...team, avgAge: ageSum / team.players?.length });
-  }, [team.players]);
 
-  useEffect(() => {
-    console.log(team);
-  }, [team]);
+    return ageSum / team.players?.length;
+  }
 
   return (
     <div className="create-team">

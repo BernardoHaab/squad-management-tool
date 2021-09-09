@@ -1,15 +1,18 @@
 import React from "react";
-import PlayerProps from "../types/usePlayerProps";
+import PlayerProps, { HighlightedPlayerProps } from "../types/usePlayerProps";
 
 type HighlightedPlayerItemProps = {
   title: string;
-  player: PlayerProps;
+  highlighted: HighlightedPlayerProps;
 };
 
 const HighlightedPlayerItem: React.FC<HighlightedPlayerItemProps> = ({
   title,
-  player,
+  highlighted,
 }) => {
+  console.log(highlighted);
+  console.log(highlighted.player.lastname.charAt(0));
+
   return (
     <div className="highlighted-player-item">
       <h1>{title}</h1>
@@ -17,12 +20,12 @@ const HighlightedPlayerItem: React.FC<HighlightedPlayerItemProps> = ({
       <div className="player">
         <div className="player-hover">
           <div className="player-initials">
-            {player.firstname.charAt(0).toUpperCase()}
-            {player.lastname.charAt(0).toUpperCase}
+            {highlighted.player.firstname.charAt(0).toUpperCase()}
+            {highlighted.player.lastname.charAt(0).toUpperCase()}
           </div>
         </div>
         <div className="percetage">
-          <p>{player.percetage}% &nbsp;&nbsp;</p>
+          <p>{highlighted.percetage}% &nbsp;&nbsp;</p>
         </div>
       </div>
     </div>

@@ -23,4 +23,6 @@ export type SelectablePlayerProps = {
   isSelected: boolean;
 }
 
+export type HighlightedPlayerProps = { player: PlayerProps; percetage: number }
+
 export default PlayerProps;

@@ -1,14 +1,18 @@
 import { createContext } from "react";
-import PlayerProps from "../types/usePlayerProps";
+import { HighlightedPlayerProps } from "../types/usePlayerProps";
 import TeamProps from "../types/useTeamProps";
 
 interface GlobalContextProps {
   myTeams: TeamProps[];
   setMyTeams: React.Dispatch<React.SetStateAction<TeamProps[]>>;
-  mostPicked: PlayerProps | null;
-  setMostPicked: React.Dispatch<React.SetStateAction<PlayerProps | null>>;
-  lessPicked: PlayerProps | null;
-  setLessPicked: React.Dispatch<React.SetStateAction<PlayerProps | null>>;
+  mostPicked: HighlightedPlayerProps | null;
+  setMostPicked: React.Dispatch<
+    React.SetStateAction<HighlightedPlayerProps | null>
+  >;
+  lessPicked: HighlightedPlayerProps | null;
+  setLessPicked: React.Dispatch<
+    React.SetStateAction<HighlightedPlayerProps | null>
+  >;
 }
 
 const GlobalContext = createContext<GlobalContextProps>({
@@ -19,16 +23,20 @@ const GlobalContext = createContext<GlobalContextProps>({
   mostPicked: null,
   setMostPicked: (
     value:
-      | PlayerProps
+      | HighlightedPlayerProps
       | null
-      | ((prevState: PlayerProps | null) => PlayerProps | null)
+      | ((
+          prevState: HighlightedPlayerProps | null
+        ) => HighlightedPlayerProps | null)
   ) => {},
   lessPicked: null,
   setLessPicked: (
     value:
-      | PlayerProps
+      | HighlightedPlayerProps
       | null
-      | ((prevState: PlayerProps | null) => PlayerProps | null)
+      | ((
+          prevState: HighlightedPlayerProps | null
+        ) => HighlightedPlayerProps | null)
   ) => {},
 });
 

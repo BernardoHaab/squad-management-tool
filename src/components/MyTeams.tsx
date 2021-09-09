@@ -10,9 +10,10 @@ import Card from "./Card";
 
 type MyTeamsProps = {
   myTeams: TeamProps[];
+  deleteTeam: (team: TeamProps) => void;
 };
 
-const MyTeams: React.FC<MyTeamsProps> = ({ myTeams }) => {
+const MyTeams: React.FC<MyTeamsProps> = ({ myTeams, deleteTeam }) => {
   return (
     <Card title="My Teams" hasCreateButton={true} className="my-teams">
       <div className="teams-table">
@@ -44,7 +45,7 @@ const MyTeams: React.FC<MyTeamsProps> = ({ myTeams }) => {
         {myTeams.length > 0 ? (
           <ul className="teams-list">
             {myTeams.map((team, id) => (
-              <TeamsItem key={id} team={team} />
+              <TeamsItem key={id} team={team} deleteTeam={deleteTeam} />
             ))}
           </ul>
         ) : (
