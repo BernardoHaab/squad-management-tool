@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { useRouter } from "next/router";
 import { GetStaticProps } from "next";
+import Head from "next/head";
 import { v4 } from "uuid";
 
 import { DndProvider } from "react-dnd";
@@ -197,6 +198,9 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ players }) => {
 
   return (
     <div className="create-team">
+      <Head>
+        <title>Squad Management Tool | Create Team</title>
+      </Head>
       <Header userName="Bernardo Haab" />
       <main>
         <Card title="Create your team">

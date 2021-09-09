@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useContext } from "react";
+import Head from "next/head";
 
 import Footer from "../src/components/Footer";
 import Header from "../src/components/Header";
@@ -41,6 +42,9 @@ const Home: NextPage = () => {
 
   return (
     <div className="page-home">
+      <Head>
+        <title>Squad Management Tool | My Teams</title>
+      </Head>
       <Header userName="Bernardo Haab" />
 
       <main>
