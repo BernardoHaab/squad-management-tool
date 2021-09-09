@@ -16,10 +16,22 @@ const Home: NextPage = () => {
     useContext(GlobalContext);
   const [sortedHighest, setSortedHighest] = useState<TeamProps[]>([]);
   const [sortedLowest, setSortedLowest] = useState<TeamProps[]>([]);
+  const [sortedMyTeams, setSortedMyTeams] = useState<TeamProps[]>([]);
 
   useEffect(() => {
     setSortedHighest(myTeams.sort((a, b) => b.avgAge - a.avgAge).slice(0, 5));
     setSortedLowest(myTeams.sort((a, b) => a.avgAge - b.avgAge).slice(0, 5));
+    setSortedMyTeams(
+      myTeams.sort((a, b) => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      })
+    );
   }, [myTeams]);
 
   function deleteTeam(team: TeamProps) {
@@ -32,7 +44,7 @@ const Home: NextPage = () => {
       <Header userName="Bernardo Haab" />
 
       <main>
-        <MyTeams deleteTeam={deleteTeam} myTeams={myTeams} />
+        <MyTeams deleteTeam={deleteTeam} myTeams={sortedMyTeams} />
         <TopFive highestAvgAge={sortedHighest} lowestAvgAge={sortedLowest} />
         <HighlightedPlayers mostPicked={mostPicked} lessPicked={lessPicked} />
       </main>

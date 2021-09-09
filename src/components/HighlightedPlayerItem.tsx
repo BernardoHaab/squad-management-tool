@@ -1,5 +1,5 @@
 import React from "react";
-import PlayerProps, { HighlightedPlayerProps } from "../types/usePlayerProps";
+import { HighlightedPlayerProps } from "../types/usePlayerProps";
 
 type HighlightedPlayerItemProps = {
   title: string;
